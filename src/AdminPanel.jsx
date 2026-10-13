@@ -20,6 +20,10 @@ const emptyForm = {
   is_available: true
 };
 
+const isPasswordSetupLink = () =>
+  /type=(invite|recovery)/.test(window.location.hash) ||
+  new URLSearchParams(window.location.search).has('code');
+
 function AdminPanel({ defaultMenu }) {
   const [session, setSession] = useState(null);
   const [checkingSession, setCheckingSession] = useState(true);
@@ -27,7 +31,7 @@ function AdminPanel({ defaultMenu }) {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [passwordSetup, setPasswordSetup] = useState(
-    /type=(invite|recovery)/.test(window.location.hash)
+    isPasswordSetupLink
   );
   const [items, setItems] = useState([]);
   const [form, setForm] = useState(emptyForm);
@@ -59,14 +63,13 @@ function AdminPanel({ defaultMenu }) {
 
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
-      setPasswordSetup(/type=(invite|recovery)/.test(window.location.hash));
       setCheckingSession(false);
       if (data.session) loadItems();
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession);
-      if (nextSession && /type=(invite|recovery)/.test(window.location.hash)) {
+      if (nextSession && (_event === 'PASSWORD_RECOVERY' || isPasswordSetupLink())) {
         setPasswordSetup(true);
       }
       if (nextSession) window.setTimeout(loadItems, 0);
