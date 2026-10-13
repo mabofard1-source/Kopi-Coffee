@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { supabase } from './supabaseClient.js';
 
 const ADMIN_EMAIL = 'mabofard1@gmail.com';
