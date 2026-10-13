@@ -1,6 +1,8 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa";
+import AdminPanel from './AdminPanel.jsx';
+import { supabase } from './supabaseClient.js';
 
 const menu = [
   {
@@ -309,9 +311,13 @@ function MenuCard({ section, term }) {
         <MenuArt type={section.image} />
       </header>
 
-      {items.map(([name, price]) => (
-        <div className="menu-item" key={name}>
-          <span className="item-name">{name}</span>
+      {items.map(([name, price, available, imageUrl]) => (
+        <div className={`menu-item${imageUrl ? ' has-image' : ''}`} key={name}>
+          {imageUrl && <img className="menu-item-image" src={imageUrl} alt="" loading="lazy" />}
+        <span className={`item-name${available === false ? ' item-unavailable' : ''}`}>
+          {name}
+          {available === false && <small>Unavailable</small>}
+        </span>
 
           <span className="item-price">
             {price === null ? (
@@ -598,17 +604,52 @@ function MenuArt({ type }) {
   );
 }
 
-function App() {
+function CafeSite() {
   const [activeCategory, setActiveCategory] = useState('All');
+  const [menuSections, setMenuSections] = useState(menu);
   const [activeSection, setActiveSection] = useState('home');
   const [search, setSearch] = useState('');
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const term = search.trim().toLowerCase();
 
+  useEffect(() => {
+    if (!supabase) return;
+    let cancelled = false;
+
+    supabase
+      .from('menu_items')
+      .select('name, category, section_title, art_key, price, image_url, is_available, sort_order')
+      .order('sort_order', { ascending: true })
+      .then(({ data, error }) => {
+        if (cancelled || error || !data?.length) return;
+        const groups = new Map();
+        data.forEach((row) => {
+          const title = row.section_title || row.category;
+          if (!groups.has(title)) {
+            groups.set(title, {
+              category: row.category,
+              title,
+              image: row.art_key || 'coffee',
+              items: []
+            });
+          }
+          groups.get(title).items.push([
+            row.name,
+            row.price,
+            row.is_available,
+            row.image_url
+          ]);
+        });
+        setMenuSections(Array.from(groups.values()));
+      });
+
+    return () => { cancelled = true; };
+  }, []);
+
   const visibleSections = useMemo(
     () =>
-      menu.filter((section) => {
+      menuSections.filter((section) => {
         const inCategory =
           activeCategory === 'All' ||
           section.category === activeCategory;
@@ -621,7 +662,7 @@ function App() {
 
         return inCategory && hasMatch;
       }),
-    [activeCategory, term]
+    [activeCategory, term, menuSections]
   );
 
   const itemCount = visibleSections.reduce(
@@ -1194,6 +1235,13 @@ function App() {
 </footer>
     </>
   );
+}
+
+function App() {
+  if (window.location.pathname.replace(/\/+$/, '') === '/admin') {
+    return <AdminPanel defaultMenu={menu} />;
+  }
+  return <CafeSite />;
 }
 
 export default App;
