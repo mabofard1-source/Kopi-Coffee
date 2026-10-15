@@ -3786,3 +3786,12 @@ a {
     color: #fffaf2;
   }
 }
+.admin-search {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  font: inherit;
+  background: #fff;
+}

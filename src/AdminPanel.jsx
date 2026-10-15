@@ -39,6 +39,7 @@ function AdminPanel({ defaultMenu }) {
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
+  const [search, setSearch] = useState('');
 
   const loadItems = async () => {
     if (!supabase) return;
@@ -239,6 +240,16 @@ function AdminPanel({ defaultMenu }) {
     await loadItems();
   };
 
+  // البحث في الأصناف
+  const normalize = (value) => String(value ?? '').toLowerCase().trim();
+  const query = normalize(search);
+  const filteredItems = query
+    ? items.filter((item) =>
+        [item.name, item.category, item.section_title, item.price]
+          .some((field) => normalize(field).includes(query))
+      )
+    : items;
+
   if (!supabase) {
     return (
       <main className="admin-shell">
@@ -328,10 +339,32 @@ function AdminPanel({ defaultMenu }) {
         </section>
 
         <section className="admin-card admin-list-card">
-          <div className="admin-list-heading"><div><h2>أصناف المنيو</h2><p>تقدر تعدّل السعر أو تخفي صنف مؤقتًا.</p></div><button className="admin-secondary-button" type="button" onClick={loadItems}>تحديث القائمة</button></div>
-          {!items.length ? <div className="admin-empty"><p>قاعدة البيانات لسه مافيهاش أصناف.</p><button className="admin-primary-button" type="button" onClick={importDefaultMenu} disabled={busy}>{busy ? 'جارٍ الاستيراد...' : 'استيراد المنيو الحالي'}</button></div> : (
+          <div className="admin-list-heading">
+            <div><h2>أصناف المنيو</h2><p>تقدر تعدّل السعر أو تخفي صنف مؤقتًا.</p></div>
+            <button className="admin-secondary-button" type="button" onClick={loadItems}>تحديث القائمة</button>
+          </div>
+
+          {items.length > 0 && (
+            <input
+              className="admin-search"
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="ابحث باسم الصنف أو القسم أو السعر..."
+              aria-label="بحث في الأصناف"
+            />
+          )}
+
+          {!items.length ? (
+            <div className="admin-empty">
+              <p>قاعدة البيانات لسه مافيهاش أصناف.</p>
+              <button className="admin-primary-button" type="button" onClick={importDefaultMenu} disabled={busy}>{busy ? 'جارٍ الاستيراد...' : 'استيراد المنيو الحالي'}</button>
+            </div>
+          ) : !filteredItems.length ? (
+            <div className="admin-empty"><p>مفيش أصناف مطابقة للبحث "{search}".</p></div>
+          ) : (
             <div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>الصنف</th><th>القسم</th><th>السعر</th><th>التوفر</th><th>إجراءات</th></tr></thead><tbody>
-              {items.map((item) => <tr key={item.id}><td><strong>{item.name}</strong></td><td>{item.section_title || item.category}</td><td>{item.price == null ? '—' : `${item.price} ج.م`}</td><td><button className={`admin-availability ${item.is_available ? 'is-available' : ''}`} type="button" onClick={() => toggleAvailability(item)}>{item.is_available ? 'متاح' : 'غير متاح'}</button></td><td><div className="admin-row-actions"><button type="button" onClick={() => editItem(item)}>تعديل</button><button type="button" className="admin-delete-button" onClick={() => deleteItem(item)}>حذف</button></div></td></tr>)}
+              {filteredItems.map((item) => <tr key={item.id}><td><strong>{item.name}</strong></td><td>{item.section_title || item.category}</td><td>{item.price == null ? '—' : `${item.price} ج.م`}</td><td><button className={`admin-availability ${item.is_available ? 'is-available' : ''}`} type="button" onClick={() => toggleAvailability(item)}>{item.is_available ? 'متاح' : 'غير متاح'}</button></td><td><div className="admin-row-actions"><button type="button" onClick={() => editItem(item)}>تعديل</button><button type="button" className="admin-delete-button" onClick={() => deleteItem(item)}>حذف</button></div></td></tr>)}
             </tbody></table></div>
           )}
         </section>
