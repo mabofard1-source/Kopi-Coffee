@@ -270,11 +270,14 @@ function AdminPanel({ defaultMenu }) {
     return (
       <main className="admin-shell">
         <section className="admin-card admin-login-card">
-          <span className="admin-kicker admin-brand-kicker"><svg className="admin-fox-mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-  <path d="M5.5 4.5 18.7 12.3a13.2 13.2 0 0 1 10.6 0L42.5 4.5l-2.8 18.1c-1.3 8.3-6.8 15.2-15.7 20.8C15.1 37.8 9.6 30.9 8.3 22.6L5.5 4.5Z" />
-  <path d="m10 10 8.2 7.1M38 10l-8.2 7.1M24 12.5c-4 4-9 8.5-9 14.8 0 5.8 4.3 10.4 9 13.5 4.7-3.1 9-7.7 9-13.5 0-6.3-5-10.8-9-14.8Z" />
-  <path d="M16.4 27c2.2-2.4 4.7-2.4 7.1.1-2.4 2.5-4.9 2.4-7.1-.1Zm15.2 0c-2.2-2.4-4.7-2.4-7.1.1 2.4 2.5 4.9 2.4 7.1-.1Z" />
-  <path d="m21.5 33 2.5-1.4 2.5 1.4L24 36l-2.5-3Zm2.5 3v3m0-3c-1.1 1.8-2.6 2.4-4.5 1.8m4.5-1.8c1.1 1.8 2.6 2.4 4.5 1.8" />
+          <span className="admin-kicker admin-brand-kicker"><svg className="admin-fox-mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+  <g fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M27 37C23 31 18 20 20 12c1-4 5-3 9 0 5 4 9 10 13 17M73 37c4-6 9-17 7-25-1-4-5-3-9 0-5 4-9 10-13 17" />
+    <path d="M24 46c2-13 13-21 26-21s24 8 26 21c-1 16-12 28-23 35-2 1-4 1-6 0-11-7-22-19-23-35Z" />
+    <path d="M25 47c4-10 11-16 18-19 4 5 6 12 7 24 1-12 3-19 7-24 7 3 14 9 18 19" />
+    <path d="M25 55c4-7 9-11 14-10 6 1 9 7 9 16v12c-3-4-6-6-10-5-5 1-10-3-13-9m50-4c-4-7-9-11-14-10-6 1-9 7-9 16v12c3-4 6-6 10-5 5 1 10-3 13-9" />
+    <ellipse cx="50" cy="75" rx="5.5" ry="4.2" />
+  </g>
 </svg>
 KOPI · ADMIN</span>
           <h1>اعمل كلمة مرور</h1>
@@ -316,11 +319,14 @@ KOPI · ADMIN</span>
       <div className="admin-dashboard">
         <header className="admin-topbar">
           <a className="admin-back-link" href="/">↙ العودة للموقع</a>
-          <span className="admin-kicker admin-brand-kicker"><svg className="admin-fox-mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-  <path d="M5.5 4.5 18.7 12.3a13.2 13.2 0 0 1 10.6 0L42.5 4.5l-2.8 18.1c-1.3 8.3-6.8 15.2-15.7 20.8C15.1 37.8 9.6 30.9 8.3 22.6L5.5 4.5Z" />
-  <path d="m10 10 8.2 7.1M38 10l-8.2 7.1M24 12.5c-4 4-9 8.5-9 14.8 0 5.8 4.3 10.4 9 13.5 4.7-3.1 9-7.7 9-13.5 0-6.3-5-10.8-9-14.8Z" />
-  <path d="M16.4 27c2.2-2.4 4.7-2.4 7.1.1-2.4 2.5-4.9 2.4-7.1-.1Zm15.2 0c-2.2-2.4-4.7-2.4-7.1.1 2.4 2.5 4.9 2.4 7.1-.1Z" />
-  <path d="m21.5 33 2.5-1.4 2.5 1.4L24 36l-2.5-3Zm2.5 3v3m0-3c-1.1 1.8-2.6 2.4-4.5 1.8m4.5-1.8c1.1 1.8 2.6 2.4 4.5 1.8" />
+          <span className="admin-kicker admin-brand-kicker"><svg className="admin-fox-mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+  <g fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M27 37C23 31 18 20 20 12c1-4 5-3 9 0 5 4 9 10 13 17M73 37c4-6 9-17 7-25-1-4-5-3-9 0-5 4-9 10-13 17" />
+    <path d="M24 46c2-13 13-21 26-21s24 8 26 21c-1 16-12 28-23 35-2 1-4 1-6 0-11-7-22-19-23-35Z" />
+    <path d="M25 47c4-10 11-16 18-19 4 5 6 12 7 24 1-12 3-19 7-24 7 3 14 9 18 19" />
+    <path d="M25 55c4-7 9-11 14-10 6 1 9 7 9 16v12c-3-4-6-6-10-5-5 1-10-3-13-9m50-4c-4-7-9-11-14-10-6 1-9 7-9 16v12c3-4 6-6 10-5 5 1 10-3 13-9" />
+    <ellipse cx="50" cy="75" rx="5.5" ry="4.2" />
+  </g>
 </svg>
 KOPI · ADMIN</span>
           <button className="admin-secondary-button" type="button" onClick={signOut}>تسجيل الخروج</button>
