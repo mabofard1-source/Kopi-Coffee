@@ -270,7 +270,7 @@ function AdminPanel({ defaultMenu }) {
     return (
       <main className="admin-shell">
         <section className="admin-card admin-login-card">
-          <span className="admin-kicker">KOPI · ADMIN</span>
+          <span className="admin-kicker admin-brand-kicker"><img src="/assets/kopi-mark.jpg" alt="" aria-hidden="true" />KOPI · ADMIN</span>
           <h1>اعمل كلمة مرور</h1>
           <p>اختار كلمة مرور لحساب إدارة المنيو.</p>
           <form className="admin-form" onSubmit={updatePassword}>
@@ -310,7 +310,7 @@ function AdminPanel({ defaultMenu }) {
       <div className="admin-dashboard">
         <header className="admin-topbar">
           <a className="admin-back-link" href="/">↙ العودة للموقع</a>
-          <span className="admin-kicker">KOPI · ADMIN</span>
+          <span className="admin-kicker admin-brand-kicker"><img src="/assets/kopi-mark.jpg" alt="" aria-hidden="true" />KOPI · ADMIN</span>
           <button className="admin-secondary-button" type="button" onClick={signOut}>تسجيل الخروج</button>
         </header>
 

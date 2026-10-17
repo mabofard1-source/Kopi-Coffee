@@ -4386,3 +4386,20 @@ input[type="submit"]:active {
     object-fit: contain;
   }
 }
+
+.admin-brand-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.admin-brand-kicker img {
+  display: block;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  border-radius: 50%;
+  background: #f7f1e3;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
