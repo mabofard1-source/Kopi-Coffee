@@ -4386,21 +4386,3 @@ input[type="submit"]:active {
     object-fit: contain;
   }
 }
-
-.admin-brand-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.admin-fox-mark {
-  display: block;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  fill: none;
-  stroke: #4b2815;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.7;
-}
