@@ -271,9 +271,10 @@ function AdminPanel({ defaultMenu }) {
       <main className="admin-shell">
         <section className="admin-card admin-login-card">
           <span className="admin-kicker admin-brand-kicker"><svg className="admin-fox-mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-  <path d="M7 5 20 12Q24 10 28 12L41 5 39 23c-1 10-7 17-15 20C16 40 10 33 9 23L7 5Z" />
-  <path d="m11 12 9 5m17-5-9 5M15 26q4-4 8 0m10 0q-4-4-8 0M19 31q5 3 10 0l-5 7-5-7Z" />
-  <path d="M24 17v11" />
+  <path d="M5.5 4.5 18.7 12.3a13.2 13.2 0 0 1 10.6 0L42.5 4.5l-2.8 18.1c-1.3 8.3-6.8 15.2-15.7 20.8C15.1 37.8 9.6 30.9 8.3 22.6L5.5 4.5Z" />
+  <path d="m10 10 8.2 7.1M38 10l-8.2 7.1M24 12.5c-4 4-9 8.5-9 14.8 0 5.8 4.3 10.4 9 13.5 4.7-3.1 9-7.7 9-13.5 0-6.3-5-10.8-9-14.8Z" />
+  <path d="M16.4 27c2.2-2.4 4.7-2.4 7.1.1-2.4 2.5-4.9 2.4-7.1-.1Zm15.2 0c-2.2-2.4-4.7-2.4-7.1.1 2.4 2.5 4.9 2.4 7.1-.1Z" />
+  <path d="m21.5 33 2.5-1.4 2.5 1.4L24 36l-2.5-3Zm2.5 3v3m0-3c-1.1 1.8-2.6 2.4-4.5 1.8m4.5-1.8c1.1 1.8 2.6 2.4 4.5 1.8" />
 </svg>
 KOPI · ADMIN</span>
           <h1>اعمل كلمة مرور</h1>
@@ -316,9 +317,10 @@ KOPI · ADMIN</span>
         <header className="admin-topbar">
           <a className="admin-back-link" href="/">↙ العودة للموقع</a>
           <span className="admin-kicker admin-brand-kicker"><svg className="admin-fox-mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-  <path d="M7 5 20 12Q24 10 28 12L41 5 39 23c-1 10-7 17-15 20C16 40 10 33 9 23L7 5Z" />
-  <path d="m11 12 9 5m17-5-9 5M15 26q4-4 8 0m10 0q-4-4-8 0M19 31q5 3 10 0l-5 7-5-7Z" />
-  <path d="M24 17v11" />
+  <path d="M5.5 4.5 18.7 12.3a13.2 13.2 0 0 1 10.6 0L42.5 4.5l-2.8 18.1c-1.3 8.3-6.8 15.2-15.7 20.8C15.1 37.8 9.6 30.9 8.3 22.6L5.5 4.5Z" />
+  <path d="m10 10 8.2 7.1M38 10l-8.2 7.1M24 12.5c-4 4-9 8.5-9 14.8 0 5.8 4.3 10.4 9 13.5 4.7-3.1 9-7.7 9-13.5 0-6.3-5-10.8-9-14.8Z" />
+  <path d="M16.4 27c2.2-2.4 4.7-2.4 7.1.1-2.4 2.5-4.9 2.4-7.1-.1Zm15.2 0c-2.2-2.4-4.7-2.4-7.1.1 2.4 2.5 4.9 2.4 7.1-.1Z" />
+  <path d="m21.5 33 2.5-1.4 2.5 1.4L24 36l-2.5-3Zm2.5 3v3m0-3c-1.1 1.8-2.6 2.4-4.5 1.8m4.5-1.8c1.1 1.8 2.6 2.4 4.5 1.8" />
 </svg>
 KOPI · ADMIN</span>
           <button className="admin-secondary-button" type="button" onClick={signOut}>تسجيل الخروج</button>
