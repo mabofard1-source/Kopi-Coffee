@@ -270,13 +270,13 @@ function AdminPanel({ defaultMenu }) {
     return (
       <main className="admin-shell">
         <section className="admin-card admin-login-card">
-          <span className="admin-kicker admin-brand-kicker"><svg className="admin-fox-mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-  <g fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M27 37C23 31 18 20 20 12c1-4 5-3 9 0 5 4 9 10 13 17M73 37c4-6 9-17 7-25-1-4-5-3-9 0-5 4-9 10-13 17" />
-    <path d="M24 46c2-13 13-21 26-21s24 8 26 21c-1 16-12 28-23 35-2 1-4 1-6 0-11-7-22-19-23-35Z" />
-    <path d="M25 47c4-10 11-16 18-19 4 5 6 12 7 24 1-12 3-19 7-24 7 3 14 9 18 19" />
-    <path d="M25 55c4-7 9-11 14-10 6 1 9 7 9 16v12c-3-4-6-6-10-5-5 1-10-3-13-9m50-4c-4-7-9-11-14-10-6 1-9 7-9 16v12c3-4 6-6 10-5 5 1 10-3 13-9" />
-    <ellipse cx="50" cy="75" rx="5.5" ry="4.2" />
+          <span className="admin-kicker admin-brand-kicker"><svg className="admin-fox-mark" viewBox="95 80 325 345" aria-hidden="true" focusable="false">
+  <g fill="none" stroke="currentColor" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M138 238c-18-25-34-69-30-107 2-21 8-32 22-32 29 0 61 33 84 69m168 70c18-25 34-69 30-107-2-21-8-32-22-32-29 0-61 33-84 69" />
+    <path d="M132 238c1-47 38-79 83-79 15-4 26-4 41-4s26 0 41 4c45 0 82 32 83 79 7 17 8 36 2 53-26 34-60 66-93 92-16 13-28 24-33 27-5-3-17-14-33-27-33-26-67-58-93-92-6-17-5-36 2-53Z" />
+    <path d="M133 237c15-38 37-60 68-73 28 19 48 55 57 128 9-73 29-109 57-128 31 13 53 35 68 73" />
+    <path d="M132 291c13-31 32-52 52-52 30 0 49 30 52 62 3 27-2 51 4 72-12-7-18-19-32-29-9-6-18-7-28-4-21 2-37-18-48-49Zm248 0c-13-31-32-52-52-52-30 0-49 30-52 62-3 27 2 51-4 72 12-7 18-19 32-29 9-6 18-7 28-4 21 2 37-18 48-49Z" />
+    <ellipse cx="256" cy="386" rx="26" ry="20" />
   </g>
 </svg>
 KOPI · ADMIN</span>
@@ -319,13 +319,13 @@ KOPI · ADMIN</span>
       <div className="admin-dashboard">
         <header className="admin-topbar">
           <a className="admin-back-link" href="/">↙ العودة للموقع</a>
-          <span className="admin-kicker admin-brand-kicker"><svg className="admin-fox-mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-  <g fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M27 37C23 31 18 20 20 12c1-4 5-3 9 0 5 4 9 10 13 17M73 37c4-6 9-17 7-25-1-4-5-3-9 0-5 4-9 10-13 17" />
-    <path d="M24 46c2-13 13-21 26-21s24 8 26 21c-1 16-12 28-23 35-2 1-4 1-6 0-11-7-22-19-23-35Z" />
-    <path d="M25 47c4-10 11-16 18-19 4 5 6 12 7 24 1-12 3-19 7-24 7 3 14 9 18 19" />
-    <path d="M25 55c4-7 9-11 14-10 6 1 9 7 9 16v12c-3-4-6-6-10-5-5 1-10-3-13-9m50-4c-4-7-9-11-14-10-6 1-9 7-9 16v12c3-4 6-6 10-5 5 1 10-3 13-9" />
-    <ellipse cx="50" cy="75" rx="5.5" ry="4.2" />
+          <span className="admin-kicker admin-brand-kicker"><svg className="admin-fox-mark" viewBox="95 80 325 345" aria-hidden="true" focusable="false">
+  <g fill="none" stroke="currentColor" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M138 238c-18-25-34-69-30-107 2-21 8-32 22-32 29 0 61 33 84 69m168 70c18-25 34-69 30-107-2-21-8-32-22-32-29 0-61 33-84 69" />
+    <path d="M132 238c1-47 38-79 83-79 15-4 26-4 41-4s26 0 41 4c45 0 82 32 83 79 7 17 8 36 2 53-26 34-60 66-93 92-16 13-28 24-33 27-5-3-17-14-33-27-33-26-67-58-93-92-6-17-5-36 2-53Z" />
+    <path d="M133 237c15-38 37-60 68-73 28 19 48 55 57 128 9-73 29-109 57-128 31 13 53 35 68 73" />
+    <path d="M132 291c13-31 32-52 52-52 30 0 49 30 52 62 3 27-2 51 4 72-12-7-18-19-32-29-9-6-18-7-28-4-21 2-37-18-48-49Zm248 0c-13-31-32-52-52-52-30 0-49 30-52 62-3 27 2 51-4 72 12-7 18-19 32-29 9-6 18-7 28-4 21 2 37-18 48-49Z" />
+    <ellipse cx="256" cy="386" rx="26" ry="20" />
   </g>
 </svg>
 KOPI · ADMIN</span>

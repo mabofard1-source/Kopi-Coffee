@@ -4395,11 +4395,11 @@ input[type="submit"]:active {
 
 .admin-fox-mark {
   display: block;
-  width: 22px;
-  height: 22px;
-  flex: 0 0 22px;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
   fill: none;
-  stroke: #6b3b20;
+  stroke: #4b2815;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1.7;
