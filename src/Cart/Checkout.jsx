@@ -370,101 +370,103 @@ export default function Checkout() {
             )}
           </fieldset>
 
-          <Field
-            id="kc-name"
-            label="Full name"
-            error={errors.name}
-          >
-            <input
-              type="text"
-              autoComplete="name"
-              required
-              {...fieldProps("name")}
-            />
-          </Field>
-
-          <Field
-            id="kc-phone"
-            label="Mobile number"
-            error={errors.phone}
-          >
-            <input
-              type="tel"
-              inputMode="tel"
-              autoComplete="tel"
-              placeholder="01012345678"
-              required
-              {...fieldProps("phone")}
-            />
-          </Field>
-
-          {fulfillment === "delivery" && (
+          {fulfillment && (
             <>
               <Field
-                id="kc-address"
-                label="Delivery address"
-                error={errors.address}
-              >
-                <textarea
-                  autoComplete="street-address"
-                  placeholder="Street, building, floor, apartment"
-                  required
-                  {...fieldProps("address")}
-                />
-              </Field>
-
-              <Field
-                id="kc-landmark"
-                label="Landmark"
-                optional
+                id="kc-name"
+                label="Full name"
+                error={errors.name}
               >
                 <input
                   type="text"
-                  autoComplete="off"
-                  {...fieldProps("landmark")}
+                  autoComplete="name"
+                  required
+                  {...fieldProps("name")}
                 />
               </Field>
+
+              <Field
+                id="kc-phone"
+                label="Mobile number"
+                error={errors.phone}
+              >
+                <input
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  placeholder="01012345678"
+                  required
+                  {...fieldProps("phone")}
+                />
+              </Field>
+
+              {fulfillment === "delivery" && (
+                <>
+                  <Field
+                    id="kc-address"
+                    label="Delivery address"
+                    error={errors.address}
+                  >
+                    <textarea
+                      autoComplete="street-address"
+                      placeholder="Street, building, floor, apartment"
+                      required
+                      {...fieldProps("address")}
+                    />
+                  </Field>
+
+                  <Field
+                    id="kc-landmark"
+                    label="Landmark"
+                    optional
+                  >
+                    <input
+                      type="text"
+                      autoComplete="off"
+                      {...fieldProps("landmark")}
+                    />
+                  </Field>
+                </>
+              )}
+
+              <Field
+                id="kc-notes"
+                label="Notes for Kopi"
+                optional
+              >
+                <textarea {...fieldProps("notes")} />
+              </Field>
+
+              <div className="kc-co-facts">
+                <p>
+                  <span>Order type</span>
+                  <strong>
+                    {fulfillment === "pickup"
+                      ? "Pickup at the branch"
+                      : "Delivery to your address"}
+                  </strong>
+                </p>
+
+                <p>
+                  <span>Payment</span>
+                  <strong>
+                    {fulfillment === "pickup"
+                      ? "Cash at the branch"
+                      : "Cash on delivery"}
+                  </strong>
+                </p>
+              </div>
+
+              <button type="submit" className="primary-button kc-submit">
+                Send order on WhatsApp
+              </button>
+
+              <p className="kc-hint">
+                WhatsApp opens with your order ready. Press Send there to
+                confirm it with Kopi.
+              </p>
             </>
           )}
-
-          <Field
-            id="kc-notes"
-            label="Notes for Kopi"
-            optional
-          >
-            <textarea {...fieldProps("notes")} />
-          </Field>
-
-          <div className="kc-co-facts">
-            <p>
-              <span>Order type</span>
-              <strong>
-                {fulfillment === "pickup"
-                  ? "Pickup at the branch"
-                  : fulfillment === "delivery"
-                    ? "Delivery to your address"
-                    : "Choose pickup or delivery"}
-              </strong>
-            </p>
-
-            <p>
-              <span>Payment</span>
-              <strong>
-                {fulfillment === "pickup"
-                  ? "Cash at the branch"
-                  : "Cash on delivery"}
-              </strong>
-            </p>
-          </div>
-
-          <button type="submit" className="primary-button kc-submit">
-            Send order on WhatsApp
-          </button>
-
-          <p className="kc-hint">
-            WhatsApp opens with your order ready. Press Send there to
-            confirm it with Kopi.
-          </p>
         </form>
 
         <aside className="kc-co-summary" aria-label="Order summary">
