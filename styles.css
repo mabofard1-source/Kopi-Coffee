@@ -4352,3 +4352,10 @@ input[type="submit"]:active {
     box-shadow: none;
   }
 }
+
+@media (max-width: 640px) {
+  .mobile-menu-panel > .brand {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+}
