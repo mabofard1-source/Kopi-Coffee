@@ -4346,3 +4346,9 @@ input[type="submit"]:active {
   outline: 2px solid var(--accent, #6f4e37);
   outline-offset: 2px;
 }
+
+@media (max-width: 640px) {
+  .site-header {
+    box-shadow: none;
+  }
+}
