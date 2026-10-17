@@ -4393,11 +4393,14 @@ input[type="submit"]:active {
   gap: 7px;
 }
 
-.admin-brand-kicker img {
+.admin-fox-mark {
   display: block;
-  width: 24px;
-  height: 24px;
-  flex: 0 0 24px;
-  object-fit: contain;
-  mix-blend-mode: multiply;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  fill: none;
+  stroke: #6b3b20;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
 }

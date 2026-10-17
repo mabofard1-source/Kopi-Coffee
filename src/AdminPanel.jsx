@@ -270,7 +270,12 @@ function AdminPanel({ defaultMenu }) {
     return (
       <main className="admin-shell">
         <section className="admin-card admin-login-card">
-          <span className="admin-kicker admin-brand-kicker"><img src="/assets/kopi-mark.jpg" alt="" aria-hidden="true" />KOPI · ADMIN</span>
+          <span className="admin-kicker admin-brand-kicker"><svg className="admin-fox-mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+  <path d="M7 5 20 12Q24 10 28 12L41 5 39 23c-1 10-7 17-15 20C16 40 10 33 9 23L7 5Z" />
+  <path d="m11 12 9 5m17-5-9 5M15 26q4-4 8 0m10 0q-4-4-8 0M19 31q5 3 10 0l-5 7-5-7Z" />
+  <path d="M24 17v11" />
+</svg>
+KOPI · ADMIN</span>
           <h1>اعمل كلمة مرور</h1>
           <p>اختار كلمة مرور لحساب إدارة المنيو.</p>
           <form className="admin-form" onSubmit={updatePassword}>
@@ -310,7 +315,12 @@ function AdminPanel({ defaultMenu }) {
       <div className="admin-dashboard">
         <header className="admin-topbar">
           <a className="admin-back-link" href="/">↙ العودة للموقع</a>
-          <span className="admin-kicker admin-brand-kicker"><img src="/assets/kopi-mark.jpg" alt="" aria-hidden="true" />KOPI · ADMIN</span>
+          <span className="admin-kicker admin-brand-kicker"><svg className="admin-fox-mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+  <path d="M7 5 20 12Q24 10 28 12L41 5 39 23c-1 10-7 17-15 20C16 40 10 33 9 23L7 5Z" />
+  <path d="m11 12 9 5m17-5-9 5M15 26q4-4 8 0m10 0q-4-4-8 0M19 31q5 3 10 0l-5 7-5-7Z" />
+  <path d="M24 17v11" />
+</svg>
+KOPI · ADMIN</span>
           <button className="admin-secondary-button" type="button" onClick={signOut}>تسجيل الخروج</button>
         </header>
 
