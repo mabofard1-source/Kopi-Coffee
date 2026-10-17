@@ -1,8 +1,12 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaTiktok } from 'react-icons/fa';
 import AdminPanel from './AdminPanel.jsx';
 import { supabase } from './supabaseClient.js';
+import { CartProvider } from './Cart/CartContext.jsx';
+import QuantityControl from './Cart/QuantityControl.jsx';
+import CartDrawer from './Cart/CartDrawer.jsx';
+import Checkout from './Cart/Checkout.jsx';
 
 const menu = [
   {
@@ -273,12 +277,13 @@ const categories = [
   'Extras'
 ];
 
-function Brand({ footer = false }) {
+function Brand({ footer = false, onClick }) {
   return (
     <a
       className={footer ? 'footer-brand' : 'brand'}
       href="#home"
       aria-label="Kopi Specialty Coffee home"
+      onClick={onClick}
     >
       <img
         src="/assets/kopi-logo.jpg"
@@ -289,10 +294,9 @@ function Brand({ footer = false }) {
 }
 
 function MenuCard({ section, term }) {
-  const items = section.items.filter(
-    ([name]) =>
-      name.toLowerCase().includes(term) ||
-      section.title.toLowerCase().includes(term)
+  const items = section.items.filter(([name]) =>
+    name.toLowerCase().includes(term) ||
+    section.title.toLowerCase().includes(term)
   );
 
   if (!items.length) return null;
@@ -311,25 +315,54 @@ function MenuCard({ section, term }) {
         <MenuArt type={section.image} />
       </header>
 
-      {items.map(([name, price, available, imageUrl]) => (
-        <div className={`menu-item${imageUrl ? ' has-image' : ''}`} key={name}>
-          {imageUrl && <img className="menu-item-image" src={imageUrl} alt="" loading="lazy" />}
-        <span className={`item-name${available === false ? ' item-unavailable' : ''}`}>
-          {name}
-          {available === false && <small>Unavailable</small>}
-        </span>
+      {items.map(([name, price, available, imageUrl]) => {
+        const product = {
+          id: `${section.title}::${name}`,
+          name,
+          price: Number(price)
+        };
 
-          <span className="item-price">
-            {price === null ? (
-              '—'
-            ) : (
-              <>
-                {price} <small>L.E</small>
-              </>
+        return (
+          <div
+            className={`menu-item${imageUrl ? ' has-image' : ''}`}
+            key={product.id}
+          >
+            {imageUrl && (
+              <img
+                className="menu-item-image"
+                src={imageUrl}
+                alt={name}
+                loading="lazy"
+              />
             )}
-          </span>
-        </div>
-      ))}
+
+            <span
+              className={`item-name${
+                available === false ? ' item-unavailable' : ''
+              }`}
+            >
+              {name}
+              {available === false && <small>Unavailable</small>}
+            </span>
+
+            <div className="kc-item-end">
+              <span className="item-price">
+                {price == null ? (
+                  '—'
+                ) : (
+                  <>
+                    {price} <small>L.E</small>
+                  </>
+                )}
+              </span>
+
+              {price != null && available !== false && (
+                <QuantityControl product={product} />
+              )}
+            </div>
+          </div>
+        );
+      })}
     </article>
   );
 }
@@ -339,10 +372,7 @@ function MenuArt({ type }) {
     'signature-hot': (
       <>
         <path d="M55 39h48l-5 51H61z" />
-        <path
-          d="M103 48h10a12 12 0 0 1 0 24h-12"
-          fill="none"
-        />
+        <path d="M103 48h10a12 12 0 0 1 0 24h-12" fill="none" />
         <path d="M61 50h39" className="art-detail" />
         <path
           d="M70 29c-8-8 8-10 0-19M86 29c-8-8 8-10 0-19"
@@ -354,10 +384,7 @@ function MenuArt({ type }) {
     coffee: (
       <>
         <path d="M48 43h50l-5 47H54z" />
-        <path
-          d="M98 52h10a11 11 0 0 1 0 22h-12"
-          fill="none"
-        />
+        <path d="M98 52h10a11 11 0 0 1 0 22h-12" fill="none" />
         <path d="M54 52h43" className="art-detail" />
         <path
           d="M62 33c-7-8 8-10 1-18M81 33c-7-8 8-10 1-18"
@@ -369,15 +396,9 @@ function MenuArt({ type }) {
     'hot-chocolate': (
       <>
         <path d="M47 47h52l-5 43H53z" />
-        <path
-          d="M99 55h9a10 10 0 0 1 0 20h-11"
-          fill="none"
-        />
+        <path d="M99 55h9a10 10 0 0 1 0 20h-11" fill="none" />
         <path d="M55 57h35" className="art-cream" />
-        <path
-          d="M67 39c-8-8 8-10 0-18"
-          className="art-steam"
-        />
+        <path d="M67 39c-8-8 8-10 0-18" className="art-steam" />
         <circle cx="70" cy="62" r="3" className="art-chip" />
         <circle cx="82" cy="69" r="3" className="art-chip" />
       </>
@@ -386,10 +407,7 @@ function MenuArt({ type }) {
     'hot-drinks': (
       <>
         <path d="M57 42c-5-13 11-22 25-19 13 2 19 11 17 22l-3 29H62z" />
-        <path
-          d="M98 48h15l13-13M59 48H46L36 39"
-          fill="none"
-        />
+        <path d="M98 48h15l13-13M59 48H46L36 39" fill="none" />
         <path d="M68 28c4-10 20-10 27 0" fill="none" />
         <path d="M65 74h37" className="art-detail" />
       </>
@@ -435,10 +453,7 @@ function MenuArt({ type }) {
     'ice-tea': (
       <>
         <path d="M60 39h45l-4 52H64z" />
-        <path
-          d="M57 39h50v8H57zM68 34h34"
-          className="art-detail"
-        />
+        <path d="M57 39h50v8H57zM68 34h34" className="art-detail" />
         <path d="M83 34l13-23" className="art-straw" />
         <path d="M70 68q14-12 28 0v16H70z" className="art-fruit" />
       </>
@@ -496,10 +511,7 @@ function MenuArt({ type }) {
         <path d="M47 73 79 33l34 40z" />
         <path d="m54 69 26-30 27 30z" className="art-bread" />
         <path d="m54 69 26-30 27 30" fill="none" />
-        <path
-          d="M58 65q21-8 43 0M62 72q17-5 34 0"
-          className="art-filling"
-        />
+        <path d="M58 65q21-8 43 0M62 72q17-5 34 0" className="art-filling" />
       </>
     ),
 
@@ -614,18 +626,26 @@ function CafeSite() {
   const term = search.trim().toLowerCase();
 
   useEffect(() => {
-    if (!supabase) return;
+    if (!supabase) return undefined;
+
     let cancelled = false;
 
-    supabase
-      .from('menu_items')
-      .select('name, category, section_title, art_key, price, image_url, is_available, sort_order')
-      .order('sort_order', { ascending: true })
-      .then(({ data, error }) => {
+    async function loadMenu() {
+      try {
+        const { data, error } = await supabase
+          .from('menu_items')
+          .select(
+            'name, category, section_title, art_key, price, image_url, is_available, sort_order'
+          )
+          .order('sort_order', { ascending: true });
+
         if (cancelled || error || !data?.length) return;
+
         const groups = new Map();
+
         data.forEach((row) => {
           const title = row.section_title || row.category;
+
           if (!groups.has(title)) {
             groups.set(title, {
               category: row.category,
@@ -634,6 +654,7 @@ function CafeSite() {
               items: []
             });
           }
+
           groups.get(title).items.push([
             row.name,
             row.price,
@@ -641,10 +662,20 @@ function CafeSite() {
             row.image_url
           ]);
         });
-        setMenuSections(Array.from(groups.values()));
-      });
 
-    return () => { cancelled = true; };
+        if (!cancelled) {
+          setMenuSections(Array.from(groups.values()));
+        }
+      } catch (error) {
+        console.error('Could not load the menu from Supabase:', error);
+      }
+    }
+
+    loadMenu();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const visibleSections = useMemo(
@@ -704,7 +735,9 @@ function CafeSite() {
 
     updateActiveSection();
 
-    return () => window.removeEventListener('scroll', updateActiveSection);
+    return () => {
+      window.removeEventListener('scroll', updateActiveSection);
+    };
   }, []);
 
   const handleNavClick = (section) => {
@@ -714,88 +747,89 @@ function CafeSite() {
 
   return (
     <>
-    {mobileNavOpen && (
-  <div className="mobile-menu-layer">
-    <button
-      className="mobile-menu-backdrop"
-      type="button"
-      aria-label="Close navigation"
-      onClick={closeMobileNav}
-    />
-
-    <nav className="mobile-menu-panel" aria-label="Mobile navigation">
-      <Brand onClick={closeMobileNav} />
-
-      <a
-        className={`mobile-menu-link${activeSection === "home" ? " active" : ""}`}
-        href="#home"
-        onClick={() => handleNavClick("home")}
-      >
-        <span>Home</span>
-        <span className="nav-arrow" aria-hidden="true">↗</span>
-      </a>
-
-      <a
-        className={`mobile-menu-link${activeSection === "menu" ? " active" : ""}`}
-        href="#menu"
-        onClick={() => handleNavClick("menu")}
-      >
-        <span>Menu</span>
-        <span className="nav-arrow" aria-hidden="true">↗</span>
-      </a>
-
-      <a
-        className={`mobile-menu-link${activeSection === "about" ? " active" : ""}`}
-        href="#about"
-        onClick={() => handleNavClick("about")}
-      >
-        <span>Our story</span>
-        <span className="nav-arrow" aria-hidden="true">↗</span>
-      </a>
-
-      <a
-        className={`mobile-menu-link${activeSection === "locations" ? " active" : ""}`}
-        href="#locations"
-        onClick={() => handleNavClick("locations")}
-      >
-        <span>Contact &amp; Location</span>
-        <span className="nav-arrow" aria-hidden="true">↗</span>
-      </a>
-
-      <a
-        className="mobile-menu-view"
-        href="#menu"
-        onClick={() => handleNavClick("menu")}
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M5 9h11v8a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V9Zm11 2h2a2.5 2.5 0 0 1 0 5h-2M8 6c-1-1 1-1.5 0-2.5M12 6c-1-1 1-1.5 0-2.5" />
-        </svg>
-        <span>View Our Menu</span>
-      </a>
-
-      <a
-        className="mobile-menu-location"
-        href="#locations"
-        onClick={() => handleNavClick("locations")}
-      >
-        <svg className="maps-marker" viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M12 22s8-7.3 8-13A8 8 0 1 0 4 9c0 5.7 8 13 8 13Z"
-            fill="#EA4335"
+      {mobileNavOpen && (
+        <div className="mobile-menu-layer">
+          <button
+            className="mobile-menu-backdrop"
+            type="button"
+            aria-label="Close navigation"
+            onClick={closeMobileNav}
           />
-          <circle cx="12" cy="9" r="3" fill="#fff" />
-        </svg>
-        <span>Contact &amp; Location</span>
-      </a>
-    </nav>
-  </div>
-)}
+
+          <nav className="mobile-menu-panel" aria-label="Mobile navigation">
+            <Brand onClick={closeMobileNav} />
+
+            <a
+              className={`mobile-menu-link${activeSection === 'home' ? ' active' : ''}`}
+              href="#home"
+              onClick={() => handleNavClick('home')}
+            >
+              <span>Home</span>
+              <span className="nav-arrow" aria-hidden="true">↗</span>
+            </a>
+
+            <a
+              className={`mobile-menu-link${activeSection === 'menu' ? ' active' : ''}`}
+              href="#menu"
+              onClick={() => handleNavClick('menu')}
+            >
+              <span>Menu</span>
+              <span className="nav-arrow" aria-hidden="true">↗</span>
+            </a>
+
+            <a
+              className={`mobile-menu-link${activeSection === 'about' ? ' active' : ''}`}
+              href="#about"
+              onClick={() => handleNavClick('about')}
+            >
+              <span>Our story</span>
+              <span className="nav-arrow" aria-hidden="true">↗</span>
+            </a>
+
+            <a
+              className={`mobile-menu-link${activeSection === 'locations' ? ' active' : ''}`}
+              href="#locations"
+              onClick={() => handleNavClick('locations')}
+            >
+              <span>Contact &amp; Location</span>
+              <span className="nav-arrow" aria-hidden="true">↗</span>
+            </a>
+
+            <a
+              className="mobile-menu-view"
+              href="#menu"
+              onClick={() => handleNavClick('menu')}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 9h11v8a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V9Zm11 2h2a2.5 2.5 0 0 1 0 5h-2M8 6c-1-1 1-1.5 0-2.5M12 6c-1-1 1-1.5 0-2.5" />
+              </svg>
+              <span>View Our Menu</span>
+            </a>
+
+            <a
+              className="mobile-menu-location"
+              href="#locations"
+              onClick={() => handleNavClick('locations')}
+            >
+              <svg className="maps-marker" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 22s8-7.3 8-13A8 8 0 1 0 4 9c0 5.7 8 13 8 13Z"
+                  fill="#EA4335"
+                />
+                <circle cx="12" cy="9" r="3" fill="#fff" />
+              </svg>
+              <span>Contact &amp; Location</span>
+            </a>
+          </nav>
+        </div>
+      )}
 
       <header className="site-header">
         <Brand />
 
         <button
           className={`menu-toggle${mobileNavOpen ? ' is-open' : ''}`}
+          type="button"
           aria-label={
             mobileNavOpen ? 'Close navigation' : 'Open navigation'
           }
@@ -893,15 +927,8 @@ function CafeSite() {
               goes a long way
             </span>
 
-            <span
-              className="floating-bean bean-one"
-              aria-hidden="true"
-            ></span>
-
-            <span
-              className="floating-bean bean-two"
-              aria-hidden="true"
-            ></span>
+            <span className="floating-bean bean-one" aria-hidden="true"></span>
+            <span className="floating-bean bean-two" aria-hidden="true"></span>
           </div>
 
           <div className="hero-bottom">
@@ -936,7 +963,7 @@ function CafeSite() {
             >
               {categories.map((category) => (
                 <button
-                  className="category-tab"
+                  className={`category-tab${activeCategory === category ? ' active' : ''}`}
                   role="tab"
                   aria-selected={activeCategory === category}
                   type="button"
@@ -1068,65 +1095,65 @@ function CafeSite() {
                   </div>
                 </div>
 
-               <div className="contact-rows">
-  <div className="contact-row">
-    <div>
-      <span className="contact-type">Mobile</span>
-      <a
-        className="contact-number"
-        href="tel:+201036202620"
-      >
-        01036202620
-      </a>
-    </div>
+                <div className="contact-rows">
+                  <div className="contact-row">
+                    <div>
+                      <span className="contact-type">Mobile</span>
+                      <a
+                        className="contact-number"
+                        href="tel:+201036202620"
+                      >
+                        01036202620
+                      </a>
+                    </div>
 
-    <div className="contact-actions">
-  <a className="call-button" href="tel:+201036202620">
-    <span className="call-symbol">📞</span>
-    <span>Call us</span>
-  </a>
+                    <div className="contact-actions">
+                      <a className="call-button" href="tel:+201036202620">
+                        <span className="call-symbol">📞</span>
+                        <span>Call us</span>
+                      </a>
 
-  <a
-    className="chat-button"
-    href="https://wa.me/201036202620"
-    target="_blank"
-    rel="noreferrer"
-    aria-label="Chat on WhatsApp at 01036202620"
-  >
-    <svg
-  className="wa-symbol"
-  viewBox="0 0 24 24"
-  aria-hidden="true"
->
-  <path
-    fill="currentColor"
-    d="M12.04 2a9.94 9.94 0 0 0-8.53 15.05L2.1 22l5.1-1.34A10 10 0 1 0 12.04 2Zm0 18.2a8.18 8.18 0 0 1-4.17-1.14l-.3-.18-3.03.8.81-2.95-.2-.31A8.16 8.16 0 1 1 12.04 20.2Zm4.48-6.11c-.25-.13-1.47-.73-1.7-.81-.23-.09-.39-.13-.55.13-.17.25-.64.81-.78.97-.15.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.75-.67-1.25-1.49-1.4-1.74-.14-.25-.01-.39.11-.52.11-.11.25-.29.38-.44.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.55-1.33-.76-1.83-.2-.48-.4-.42-.55-.43h-.47c-.16 0-.42.06-.64.31-.22.25-.85.84-.85 2.04s.87 2.37.99 2.53c.12.17 1.72 2.63 4.16 3.69.58.25 1.03.4 1.38.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.59.21-1.09.15-1.19-.06-.1-.22-.16-.47-.29Z"
-  />
-</svg>
-    <span>Chat</span>
-  </a>
-</div>
-  </div>
+                      <a
+                        className="chat-button"
+                        href="https://wa.me/201036202620"
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label="Chat on WhatsApp at 01036202620"
+                      >
+                        <svg
+                          className="wa-symbol"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M12.04 2a9.94 9.94 0 0 0-8.53 15.05L2.1 22l5.1-1.34A10 10 0 1 0 12.04 2Zm0 18.2a8.18 8.18 0 0 1-4.17-1.14l-.3-.18-3.03.8.81-2.95-.2-.31A8.16 8.16 0 1 1 12.04 20.2Zm4.48-6.11c-.25-.13-1.47-.73-1.7-.81-.23-.09-.39-.13-.55.13-.17.25-.64.81-.78.97-.15.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.75-.67-1.25-1.49-1.4-1.74-.14-.25-.01-.39.11-.52.11-.11.25-.29.38-.44.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.55-1.33-.76-1.83-.2-.48-.4-.42-.55-.43h-.47c-.16 0-.42.06-.64.31-.22.25-.85.84-.85 2.04s.87 2.37.99 2.53c.12.17 1.72 2.63 4.16 3.69.58.25 1.03.4 1.38.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.59.21-1.09.15-1.19-.06-.1-.22-.16-.47-.29Z"
+                          />
+                        </svg>
+                        <span>Chat</span>
+                      </a>
+                    </div>
+                  </div>
 
-  <div className="contact-row landline-row">
-    <div>
-      <span className="contact-type">Landline</span>
-      <a
-        className="contact-number"
-        href="tel:+20402531615"
-      >
-        0402531615
-      </a>
-    </div>
+                  <div className="contact-row landline-row">
+                    <div>
+                      <span className="contact-type">Landline</span>
+                      <a
+                        className="contact-number"
+                        href="tel:+20402531615"
+                      >
+                        0402531615
+                      </a>
+                    </div>
 
-    <div className="contact-actions">
-      <a
-        className="call-button"
-        href="tel:+20402531615"
-      >
-        <span className="call-symbol">☎️</span>
-        <span>Call us</span>
-      </a>
+                    <div className="contact-actions">
+                      <a
+                        className="call-button"
+                        href="tel:+20402531615"
+                      >
+                        <span className="call-symbol">☎️</span>
+                        <span>Call us</span>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -1138,42 +1165,40 @@ function CafeSite() {
                   <h3>Find us online</h3>
                 </div>
 
-                
-<div className="social-links">
-  <a
-    href="https://www.facebook.com/profile.php?id=61585373786339"
-    target="_blank"
-    rel="noreferrer"
-    aria-label="Kopi on Facebook"
-  >
-    <span className="social-icon">
-      <FaFacebookF />
-    </span>
-  </a>
+                <div className="social-links">
+                  <a
+                    href="https://www.facebook.com/profile.php?id=61585373786339"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Kopi on Facebook"
+                  >
+                    <span className="social-icon">
+                      <FaFacebookF />
+                    </span>
+                  </a>
 
-  <a
-    href="https://www.instagram.com/kopicafe.kz/"
-    target="_blank"
-    rel="noreferrer"
-    aria-label="Kopi on Instagram"
-  >
-    <span className="social-icon instagram-icon">
-      <FaInstagram />
-    </span>
-  </a>
+                  <a
+                    href="https://www.instagram.com/kopicafe.kz/"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Kopi on Instagram"
+                  >
+                    <span className="social-icon instagram-icon">
+                      <FaInstagram />
+                    </span>
+                  </a>
 
-  <a
-    href="https://www.tiktok.com/@kopi.coffee.kz"
-    target="_blank"
-    rel="noreferrer"
-    aria-label="Kopi on TikTok"
-  >
-    <span className="social-icon tiktok-icon">
-      <FaTiktok />
-    </span>
-  </a>
-</div>
-
+                  <a
+                    href="https://www.tiktok.com/@kopi.coffee.kz"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Kopi on TikTok"
+                  >
+                    <span className="social-icon tiktok-icon">
+                      <FaTiktok />
+                    </span>
+                  </a>
+                </div>
               </article>
             </div>
 
@@ -1192,56 +1217,71 @@ function CafeSite() {
           </div>
         </section>
       </main>
-<footer className="site-footer">
-  <div className="footer-reference-row">
-    <Brand footer />
 
-    <nav aria-label="Footer navigation">
-      <a href="#home">Home</a>
-      <a href="#menu">Menu</a>
-      <a href="#locations">Contact &amp; Location</a>
-      <a
-        href="https://www.facebook.com/profile.php?id=61585373786339"
-        target="_blank"
-        rel="noreferrer"
-      >
-        Facebook ↗
-      </a>
-    </nav>
+      <footer className="site-footer">
+        <div className="footer-reference-row">
+          <Brand footer />
 
-    <a href="#home" className="footer-top-button">
-      Back to top ↑
-    </a>
-  </div>
+          <nav aria-label="Footer navigation">
+            <a href="#home">Home</a>
+            <a href="#menu">Menu</a>
+            <a href="#locations">Contact &amp; Location</a>
+            <a
+              href="https://www.facebook.com/profile.php?id=61585373786339"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Facebook ↗
+            </a>
+          </nav>
 
-  <div className="footer-bottom">
-    <div className="footer-legal">
-      <span>Kafr El-Zayat · El-Gharbia</span>
-      <span>
-        © {new Date().getFullYear()} Kopi Specialty Coffee. All rights reserved.
-      </span>
-    </div>
+          <a href="#home" className="footer-top-button">
+            Back to top ↑
+          </a>
+        </div>
 
-    <a
-      className="developer-credit"
-      href="https://wa.me/201004365028"
-      target="_blank"
-      rel="noreferrer"
-      aria-label="Contact Mohamed Abofard on WhatsApp"
-    >
-      Developed by <strong>Mohamed Abofard</strong> <i>↗</i>
-    </a>
-  </div>
-</footer>
+        <div className="footer-bottom">
+          <div className="footer-legal">
+            <span>Kafr El-Zayat · El-Gharbia</span>
+            <span>
+              © {new Date().getFullYear()} Kopi Specialty Coffee. All rights reserved.
+            </span>
+          </div>
+
+          <a
+            className="developer-credit"
+            href="https://wa.me/201004365028"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Contact Mohamed Abofard on WhatsApp"
+          >
+            Developed by <strong>Mohamed Abofard</strong> <i>↗</i>
+          </a>
+        </div>
+      </footer>
     </>
   );
 }
 
 function App() {
-  if (window.location.pathname.replace(/\/+$/, '') === '/admin') {
+  const path = window.location.pathname.replace(/\/+$/, '') || '/';
+
+  if (path === '/admin') {
     return <AdminPanel defaultMenu={menu} />;
   }
-  return <CafeSite />;
+
+  return (
+    <CartProvider>
+      {path === '/checkout' ? (
+        <Checkout />
+      ) : (
+        <>
+          <CafeSite />
+          <CartDrawer />
+        </>
+      )}
+    </CartProvider>
+  );
 }
 
 export default App;
