@@ -4398,8 +4398,6 @@ input[type="submit"]:active {
   width: 24px;
   height: 24px;
   flex: 0 0 24px;
-  border-radius: 50%;
-  background: #f7f1e3;
   object-fit: contain;
   mix-blend-mode: multiply;
 }
