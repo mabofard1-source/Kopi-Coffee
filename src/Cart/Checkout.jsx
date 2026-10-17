@@ -469,49 +469,51 @@ export default function Checkout() {
           )}
         </form>
 
-        <aside className="kc-co-summary" aria-label="Order summary">
-          <h2>Your order</h2>
+        {fulfillment && (
+          <aside className="kc-co-summary" aria-label="Order summary">
+            <h2>Your order</h2>
 
-          <ul className="kc-list">
-            {items.map(({ product, qty }) => {
-              const price = toNumber(product.price);
+            <ul className="kc-list">
+              {items.map(({ product, qty }) => {
+                const price = toNumber(product.price);
 
-              return (
-                <li className="kc-line" key={product.id}>
-                  <div className="kc-line-info">
-                    <strong>{product.name}</strong>
+                return (
+                  <li className="kc-line" key={product.id}>
+                    <div className="kc-line-info">
+                      <strong>{product.name}</strong>
 
-                    <small>
-                      {fmt(price)} {CURRENCY}
-                    </small>
-                  </div>
+                      <small>
+                        {fmt(price)} {CURRENCY}
+                      </small>
+                    </div>
 
-                  <QuantityControl product={product} />
+                    <QuantityControl product={product} />
 
-                  <span className="kc-line-total">
-                    {fmt(price * qty)} {CURRENCY}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
+                    <span className="kc-line-total">
+                      {fmt(price * qty)} {CURRENCY}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
 
-          <div className="kc-total">
-            <span>
-              Total · {count} {count === 1 ? "item" : "items"}
-            </span>
+            <div className="kc-total">
+              <span>
+                Total · {count} {count === 1 ? "item" : "items"}
+              </span>
 
-            <strong>
-              {fmt(total)} {CURRENCY}
-            </strong>
-          </div>
+              <strong>
+                {fmt(total)} {CURRENCY}
+              </strong>
+            </div>
 
-          <p className="kc-hint">
-            {fulfillment === "pickup"
-              ? "Your order will be ready for pickup at the branch."
-              : "Delivery fee, if any, is confirmed by Kopi on WhatsApp."}
-          </p>
-        </aside>
+            <p className="kc-hint">
+              {fulfillment === "pickup"
+                ? "Your order will be ready for pickup at the branch."
+                : "Delivery fee, if any, is confirmed by Kopi on WhatsApp."}
+            </p>
+          </aside>
+        )}
       </div>
     </Shell>
   );
