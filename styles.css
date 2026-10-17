@@ -4359,3 +4359,14 @@ input[type="submit"]:active {
     padding-bottom: 0;
   }
 }
+
+@media (max-width: 640px) {
+  .mobile-menu-panel > .brand {
+    border-bottom: 0;
+    padding: 0;
+  }
+
+  .mobile-menu-panel > .brand img {
+    object-fit: contain;
+  }
+}
