@@ -4028,6 +4028,56 @@ input[type="submit"]:active {
 .kc-co-form h2,
 .kc-co-summary h2 { margin: 0 0 16px; font-size: 1.25rem; }
 
+.kc-fulfillment {
+  min-width: 0;
+  margin: 0 0 22px;
+  padding: 0;
+  border: 0;
+}
+.kc-fulfillment legend {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.kc-fulfillment-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.kc-fulfillment-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 1.5px solid rgba(0, 0, 0, 0.2);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+.kc-fulfillment-option.is-selected {
+  border-color: var(--accent, #6f4e37);
+  background: color-mix(in srgb, var(--accent, #6f4e37) 8%, transparent);
+}
+.kc-fulfillment-option input {
+  flex: 0 0 auto;
+  margin: 3px 0 0;
+  accent-color: var(--accent, #6f4e37);
+}
+.kc-fulfillment-option span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.kc-fulfillment-option small { opacity: 0.72; line-height: 1.4; }
+.kc-fulfillment-option:focus-within {
+  outline: 2px solid var(--accent, #6f4e37);
+  outline-offset: 2px;
+}
+@media (max-width: 480px) {
+  .kc-fulfillment-options { grid-template-columns: 1fr; }
+}
+
 .kc-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
 .kc-field label { font-weight: 600; }
 .kc-field label small { font-weight: 400; opacity: 0.65; }

@@ -51,7 +51,7 @@ function saveProfile({ name, phone, address, landmark }) {
   }
 }
 
-function buildMessage({ form, items, total, toNumber }) {
+function buildMessage({ form, fulfillment, items, total, toNumber }) {
   const lines = items.map(({ product, qty }) => {
     const price = toNumber(product.price);
 
@@ -63,8 +63,10 @@ function buildMessage({ form, items, total, toNumber }) {
     "",
     `👤 الاسم: ${form.name.trim()}`,
     `📞 الموبايل: ${cleanPhone(form.phone)}`,
-    `📍 العنوان: ${form.address.trim()}`,
-    form.landmark.trim()
+    fulfillment === "delivery"
+      ? `📍 العنوان: ${form.address.trim()}`
+      : null,
+    fulfillment === "delivery" && form.landmark.trim()
       ? `🧭 علامة مميزة: ${form.landmark.trim()}`
       : null,
     form.notes.trim()
@@ -75,8 +77,12 @@ function buildMessage({ form, items, total, toNumber }) {
     ...lines,
     "",
     `💰 إجمالي الأصناف: ${fmt(total)} ${CURRENCY}`,
-    "🚚 نوع الطلب: توصيل للعنوان",
-    "💵 الدفع: كاش عند الاستلام",
+    fulfillment === "pickup"
+      ? "📦 نوع الطلب: استلام من الفرع"
+      : "🚚 نوع الطلب: توصيل للمنزل",
+    fulfillment === "pickup"
+      ? "💵 الدفع: كاش عند الاستلام في الفرع"
+      : "💵 الدفع: كاش عند الاستلام",
   ]
     .filter((line) => line !== null)
     .join("\n");
@@ -140,6 +146,16 @@ export default function Checkout() {
 
   const [errors, setErrors] = useState({});
   const [sentUrl, setSentUrl] = useState(null);
+  const [fulfillment, setFulfillment] = useState("");
+
+  const chooseFulfillment = (value) => {
+    setFulfillment(value);
+    setErrors((current) => ({
+      ...current,
+      fulfillment: "",
+      ...(value === "pickup" ? { address: "" } : {}),
+    }));
+  };
 
   const updateField = (key) => (event) => {
     setForm((current) => ({
@@ -167,6 +183,10 @@ export default function Checkout() {
 
     const nextErrors = {};
 
+    if (!fulfillment) {
+      nextErrors.fulfillment = "Choose pickup or home delivery.";
+    }
+
     if (form.name.trim().length < 2) {
       nextErrors.name = "Enter your full name.";
     }
@@ -176,7 +196,7 @@ export default function Checkout() {
         "Enter a valid Egyptian mobile number, like 01012345678.";
     }
 
-    if (form.address.trim().length < 8) {
+    if (fulfillment === "delivery" && form.address.trim().length < 8) {
       nextErrors.address =
         "Add your street, building and floor so we can find you.";
     }
@@ -192,6 +212,11 @@ export default function Checkout() {
 
     const firstError = Object.keys(nextErrors)[0];
 
+    if (firstError === "fulfillment") {
+      document.getElementById("kc-fulfillment-pickup")?.focus();
+      return;
+    }
+
     if (firstError) {
       document.getElementById(`kc-${firstError}`)?.focus();
       return;
@@ -199,6 +224,7 @@ export default function Checkout() {
 
     const message = buildMessage({
       form,
+      fulfillment,
       items,
       total,
       toNumber,
@@ -286,13 +312,63 @@ export default function Checkout() {
 
       <div className="kc-co-grid">
         <form className="kc-co-form" onSubmit={onSubmit} noValidate>
-          <h2>Delivery details</h2>
+          <h2>How would you like to receive your order?</h2>
 
           {errors.form && (
             <p className="kc-error" role="alert">
               {errors.form}
             </p>
           )}
+
+          <fieldset
+            className="kc-fulfillment"
+            aria-describedby={errors.fulfillment ? "kc-fulfillment-error" : undefined}
+          >
+            <legend>Choose your order type</legend>
+
+            <div className="kc-fulfillment-options">
+              <label
+                className={`kc-fulfillment-option ${fulfillment === "pickup" ? "is-selected" : ""}`}
+              >
+                <input
+                  id="kc-fulfillment-pickup"
+                  type="radio"
+                  name="fulfillment"
+                  value="pickup"
+                  checked={fulfillment === "pickup"}
+                  onChange={() => chooseFulfillment("pickup")}
+                  aria-invalid={errors.fulfillment ? "true" : undefined}
+                />
+                <span>
+                  <strong>Pick up at the branch</strong>
+                  <small>Collect your order from Kopi.</small>
+                </span>
+              </label>
+
+              <label
+                className={`kc-fulfillment-option ${fulfillment === "delivery" ? "is-selected" : ""}`}
+              >
+                <input
+                  type="radio"
+                  name="fulfillment"
+                  value="delivery"
+                  checked={fulfillment === "delivery"}
+                  onChange={() => chooseFulfillment("delivery")}
+                  aria-invalid={errors.fulfillment ? "true" : undefined}
+                />
+                <span>
+                  <strong>Home delivery</strong>
+                  <small>We’ll deliver your order to your address.</small>
+                </span>
+              </label>
+            </div>
+
+            {errors.fulfillment && (
+              <small className="kc-error" id="kc-fulfillment-error" role="alert">
+                {errors.fulfillment}
+              </small>
+            )}
+          </fieldset>
 
           <Field
             id="kc-name"
@@ -322,30 +398,34 @@ export default function Checkout() {
             />
           </Field>
 
-          <Field
-            id="kc-address"
-            label="Delivery address"
-            error={errors.address}
-          >
-            <textarea
-              autoComplete="street-address"
-              placeholder="Street, building, floor, apartment"
-              required
-              {...fieldProps("address")}
-            />
-          </Field>
+          {fulfillment === "delivery" && (
+            <>
+              <Field
+                id="kc-address"
+                label="Delivery address"
+                error={errors.address}
+              >
+                <textarea
+                  autoComplete="street-address"
+                  placeholder="Street, building, floor, apartment"
+                  required
+                  {...fieldProps("address")}
+                />
+              </Field>
 
-          <Field
-            id="kc-landmark"
-            label="Landmark"
-            optional
-          >
-            <input
-              type="text"
-              autoComplete="off"
-              {...fieldProps("landmark")}
-            />
-          </Field>
+              <Field
+                id="kc-landmark"
+                label="Landmark"
+                optional
+              >
+                <input
+                  type="text"
+                  autoComplete="off"
+                  {...fieldProps("landmark")}
+                />
+              </Field>
+            </>
+          )}
 
           <Field
             id="kc-notes"
@@ -358,12 +438,22 @@ export default function Checkout() {
           <div className="kc-co-facts">
             <p>
               <span>Order type</span>
-              <strong>Delivery to your address</strong>
+              <strong>
+                {fulfillment === "pickup"
+                  ? "Pickup at the branch"
+                  : fulfillment === "delivery"
+                    ? "Delivery to your address"
+                    : "Choose pickup or delivery"}
+              </strong>
             </p>
 
             <p>
               <span>Payment</span>
-              <strong>Cash on delivery</strong>
+              <strong>
+                {fulfillment === "pickup"
+                  ? "Cash at the branch"
+                  : "Cash on delivery"}
+              </strong>
             </p>
           </div>
 
@@ -415,7 +505,9 @@ export default function Checkout() {
           </div>
 
           <p className="kc-hint">
-            Delivery fee, if any, is confirmed by Kopi on WhatsApp.
+            {fulfillment === "pickup"
+              ? "Your order will be ready for pickup at the branch."
+              : "Delivery fee, if any, is confirmed by Kopi on WhatsApp."}
           </p>
         </aside>
       </div>
