@@ -4370,3 +4370,19 @@ input[type="submit"]:active {
     object-fit: contain;
   }
 }
+
+@media (max-width: 640px) {
+  .mobile-menu-panel > .brand {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .mobile-menu-panel > .brand img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    object-fit: contain;
+  }
+}
