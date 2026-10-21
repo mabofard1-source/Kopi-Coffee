@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from "react";
 
-const STORAGE_KEY = "kopi-cart";
+const STORAGE_KEY = "karmasha-cart";
 const CartContext = createContext(null);
 
 // "45", 45, "45 EGP" or "$4.50" -> number

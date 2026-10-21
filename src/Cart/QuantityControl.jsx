@@ -29,7 +29,7 @@ export default function QuantityControl({ product }) {
         type="button"
         className="qc-add"
         onClick={handleAdd}
-        aria-label={`Add ${product.name} to cart`}
+        aria-label={`أضف ${product.name} للسلة`}
       >
         Add
       </button>
@@ -40,13 +40,13 @@ export default function QuantityControl({ product }) {
     <div
       className="qc-stepper"
       role="group"
-      aria-label={`Quantity of ${product.name}`}
+      aria-label={`كمية ${product.name}`}
     >
       <button
         type="button"
         className="qc-btn"
         onClick={handleDecrement}
-        aria-label={`Remove one ${product.name}`}
+        aria-label={`احذف قطعة من ${product.name}`}
       >
         −
       </button>
@@ -59,7 +59,7 @@ export default function QuantityControl({ product }) {
         type="button"
         className="qc-btn"
         onClick={handleAdd}
-        aria-label={`Add one ${product.name}`}
+        aria-label={`أضف قطعة من ${product.name}`}
       >
         +
       </button>

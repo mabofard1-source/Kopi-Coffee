@@ -9,11 +9,11 @@ const fmt = (n) => {
   return Number.isInteger(number) ? String(number) : number.toFixed(2);
 };
 
-export default function CartDrawer({ currency = "L.E" }) {
+export default function CartDrawer({ currency = "ج.م" }) {
   const { items, count, total, toNumber, clear } = useCart();
   const [open, setOpen] = useState(false);
 
-  // Close cart when pressing Escape
+  // إغلاق السلة when pressing Escape
   useEffect(() => {
     if (!open) return;
 
@@ -58,11 +58,11 @@ export default function CartDrawer({ currency = "L.E" }) {
           type="button"
           className="kc-bar"
           onClick={() => setOpen(true)}
-          aria-label={`View your order, ${count} items`}
+          aria-label={`اعرض طلبك، ${count} صنف`}
         >
           <span className="kc-bar-count">{count}</span>
 
-          <span>View your order</span>
+          <span>اعرض طلبك</span>
 
           <span className="kc-bar-total">
             {fmt(total)} {currency}
@@ -76,7 +76,7 @@ export default function CartDrawer({ currency = "L.E" }) {
           <button
             type="button"
             className="kc-backdrop"
-            aria-label="Close cart"
+            aria-label="إغلاق السلة"
             onClick={() => setOpen(false)}
           />
 
@@ -84,21 +84,21 @@ export default function CartDrawer({ currency = "L.E" }) {
             className="kc-panel"
             role="dialog"
             aria-modal="true"
-            aria-label="Your order"
+            aria-label="طلبك"
           >
             {/* Header */}
             <header className="kc-panel-head">
               <div>
-                <h2>Your order</h2>
+                <h2>طلبك</h2>
                 <p>
-                  {count} {count === 1 ? "item" : "items"} in your cart
+                  {count} {count === 1 ? "صنف" : "أصناف"} في طلبك
                 </p>
               </div>
 
               <button
                 type="button"
                 className="kc-close"
-                aria-label="Close cart"
+                aria-label="إغلاق السلة"
                 onClick={() => setOpen(false)}
               >
                 ×
@@ -108,9 +108,9 @@ export default function CartDrawer({ currency = "L.E" }) {
             {/* Empty cart */}
             {items.length === 0 ? (
               <div className="kc-empty">
-                <p>Your cart is empty.</p>
+                <p>سلتك فاضية.</p>
                 <span>
-                  Press Add on any item in the menu to start your order.
+                  اختار الأصناف اللي بتحبها من المنيو عشان تبدأ طلبك.
                 </span>
 
                 <button
@@ -118,7 +118,7 @@ export default function CartDrawer({ currency = "L.E" }) {
                   className="primary-button"
                   onClick={() => setOpen(false)}
                 >
-                  Explore the menu
+                  شوف المنيو
                 </button>
               </div>
             ) : (
@@ -134,7 +134,7 @@ export default function CartDrawer({ currency = "L.E" }) {
                           <strong>{product.name}</strong>
 
                           <small>
-                            {fmt(price)} {currency} each
+                            {fmt(price)} {currency} للقطعة
                           </small>
                         </div>
 
@@ -152,7 +152,7 @@ export default function CartDrawer({ currency = "L.E" }) {
                 <footer className="kc-panel-foot">
                   <div className="kc-total">
                     <span>
-                      Total · {count} {count === 1 ? "item" : "items"}
+                      الإجمالي · {count} {count === 1 ? "صنف" : "أصناف"}
                     </span>
 
                     <strong>
@@ -165,7 +165,7 @@ export default function CartDrawer({ currency = "L.E" }) {
                     href="/checkout"
                     onClick={handleCheckout}
                   >
-                    Proceed to checkout
+                    تأكيد الطلب
                   </a>
 
                   <button
@@ -173,7 +173,7 @@ export default function CartDrawer({ currency = "L.E" }) {
                     className="kc-clear"
                     onClick={handleClearCart}
                   >
-                    Clear cart
+                    إفراغ السلة
                   </button>
                 </footer>
               </>

@@ -2,9 +2,9 @@
 import React, { useState } from "react";
 import { useCart } from "./CartContext.jsx";
 import QuantityControl from "./QuantityControl.jsx";
-const WHATSAPP_NUMBER = "201036202620";
-const CURRENCY = "L.E";
-const PROFILE_KEY = "kopi-customer";
+const WHATSAPP_NUMBER = "201016032853";
+const CURRENCY = "ج.م";
+const PROFILE_KEY = "karmasha-customer";
 
 const fmt = (n) => {
   const value = Number(n) || 0;
@@ -59,7 +59,7 @@ function buildMessage({ form, fulfillment, items, total, toNumber }) {
   });
 
   return [
-    "طلب جديد من موقع Kopi ☕",
+    "طلب جديد من موقع قرمشة 🍔",
     "",
     `👤 الاسم: ${form.name.trim()}`,
     `📞 الموبايل: ${cleanPhone(form.phone)}`,
@@ -95,16 +95,16 @@ function Shell({ children }) {
         <a
           className="brand"
           href="/"
-          aria-label="Kopi Specialty Coffee home"
+          aria-label="قرمشة - الرئيسية"
         >
           <img
-            src="/assets/kopi-logo.jpg"
-            alt="Kopi Specialty Coffee logo"
+            src="/assets/karmasha-logo.png"
+            alt="شعار قرمشة"
           />
         </a>
 
         <a className="header-cta" href="/#menu">
-          Back to menu <span>↩</span>
+          ارجع للمنيو <span>↩</span>
         </a>
       </header>
 
@@ -118,7 +118,7 @@ function Field({ id, label, optional, error, children }) {
     <div className="kc-field">
       <label htmlFor={id}>
         {label}
-        {optional && <small> (optional)</small>}
+        {optional && <small> (اختياري)</small>}
       </label>
 
       {children}
@@ -184,26 +184,26 @@ export default function Checkout() {
     const nextErrors = {};
 
     if (!fulfillment) {
-      nextErrors.fulfillment = "Choose pickup or home delivery.";
+      nextErrors.fulfillment = "اختار استلام من الفرع أو توصيل للبيت.";
     }
 
     if (form.name.trim().length < 2) {
-      nextErrors.name = "Enter your full name.";
+      nextErrors.name = "اكتب اسمك بالكامل.";
     }
 
     if (!isEgyptMobile(form.phone)) {
       nextErrors.phone =
-        "Enter a valid Egyptian mobile number, like 01012345678.";
+        "اكتب رقم موبايل مصري صحيح، مثل 01012345678.";
     }
 
     if (fulfillment === "delivery" && form.address.trim().length < 8) {
       nextErrors.address =
-        "Add your street, building and floor so we can find you.";
+        "اكتب الشارع ورقم المبنى والدور عشان نعرف نوصل لك.";
     }
 
     if (items.length === 0) {
       setErrors({
-        form: "Your cart is empty. Add an item before checking out.",
+        form: "سلتك فاضية، ضيف صنف قبل تأكيد الطلب.",
       });
       return;
     }
@@ -251,16 +251,15 @@ export default function Checkout() {
       <Shell>
         <section className="kc-co-done">
           <span className="eyebrow">
-            <i></i> ALMOST DONE
+            <i></i> قربنا نخلص
           </span>
 
           <h1>
-            Press <em>Send</em> in WhatsApp
+            اضغط <em>إرسال</em> في واتساب
           </h1>
 
           <p>
-            WhatsApp should have opened with your order ready. Your order
-            reaches Kopi only after you press Send there.
+            واتساب هيفتح وفيه طلبك جاهز. طلبك هيوصل لقرمشة بعد ما تضغط إرسال.
           </p>
 
           <a
@@ -269,11 +268,11 @@ export default function Checkout() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Open WhatsApp again
+            افتح واتساب تاني
           </a>
 
           <a className="text-link" href="/#menu">
-            Back to the menu <span>↗</span>
+            ارجع للمنيو <span>↗</span>
           </a>
         </section>
       </Shell>
@@ -285,15 +284,15 @@ export default function Checkout() {
       <Shell>
         <section className="kc-co-done">
           <h1>
-            Your cart is <em>empty</em>
+            سلتك <em>فاضية</em>
           </h1>
 
           <p>
-            Pick something you like from the menu, then come back here.
+            اختار اللي تحبه من المنيو وارجع هنا.
           </p>
 
           <a className="primary-button kc-submit" href="/#menu">
-            Explore the menu
+            شوف المنيو
           </a>
         </section>
       </Shell>
@@ -303,16 +302,16 @@ export default function Checkout() {
   return (
     <Shell>
       <span className="eyebrow">
-        <i></i> CHECKOUT
+        <i></i> تأكيد الطلب
       </span>
 
       <h1 className="kc-co-title">
-        Confirm your <em>order</em>
+        أكد <em>طلبك</em>
       </h1>
 
       <div className="kc-co-grid">
         <form className="kc-co-form" onSubmit={onSubmit} noValidate>
-          <h2>How would you like to receive your order?</h2>
+          <h2>تحب تستلم طلبك إزاي؟</h2>
 
           {errors.form && (
             <p className="kc-error" role="alert">
@@ -324,7 +323,7 @@ export default function Checkout() {
             className="kc-fulfillment"
             aria-describedby={errors.fulfillment ? "kc-fulfillment-error" : undefined}
           >
-            <legend>Choose your order type</legend>
+            <legend>اختار طريقة استلام الطلب</legend>
 
             <div className="kc-fulfillment-options">
               <label
@@ -340,8 +339,8 @@ export default function Checkout() {
                   aria-invalid={errors.fulfillment ? "true" : undefined}
                 />
                 <span>
-                  <strong>Pick up at the branch</strong>
-                  <small>Collect your order from Kopi.</small>
+                  <strong>استلام من الفرع</strong>
+                  <small>استلم طلبك من الفرع.</small>
                 </span>
               </label>
 
@@ -357,8 +356,8 @@ export default function Checkout() {
                   aria-invalid={errors.fulfillment ? "true" : undefined}
                 />
                 <span>
-                  <strong>Home delivery</strong>
-                  <small>We’ll deliver your order to your address.</small>
+                  <strong>توصيل للبيت</strong>
+                  <small>هنوصل طلبك لحد عنوانك.</small>
                 </span>
               </label>
             </div>
@@ -374,7 +373,7 @@ export default function Checkout() {
             <>
               <Field
                 id="kc-name"
-                label="Full name"
+                label="الاسم بالكامل"
                 error={errors.name}
               >
                 <input
@@ -387,7 +386,7 @@ export default function Checkout() {
 
               <Field
                 id="kc-phone"
-                label="Mobile number"
+                label="رقم الموبايل"
                 error={errors.phone}
               >
                 <input
@@ -404,12 +403,12 @@ export default function Checkout() {
                 <>
                   <Field
                     id="kc-address"
-                    label="Delivery address"
+                    label="عنوان التوصيل"
                     error={errors.address}
                   >
                     <textarea
                       autoComplete="street-address"
-                      placeholder="Street, building, floor, apartment"
+                      placeholder="الشارع، المبنى، الدور، الشقة"
                       required
                       {...fieldProps("address")}
                     />
@@ -417,7 +416,7 @@ export default function Checkout() {
 
                   <Field
                     id="kc-landmark"
-                    label="Landmark"
+                    label="علامة مميزة"
                     optional
                   >
                     <input
@@ -431,7 +430,7 @@ export default function Checkout() {
 
               <Field
                 id="kc-notes"
-                label="Notes for Kopi"
+                label="ملاحظات لقرمشة"
                 optional
               >
                 <textarea {...fieldProps("notes")} />
@@ -439,39 +438,39 @@ export default function Checkout() {
 
               <div className="kc-co-facts">
                 <p>
-                  <span>Order type</span>
+                  <span>نوع الطلب</span>
                   <strong>
                     {fulfillment === "pickup"
-                      ? "Pickup at the branch"
-                      : "Delivery to your address"}
+                      ? "استلام من الفرع"
+                      : "توصيل للعنوان"}
                   </strong>
                 </p>
 
                 <p>
-                  <span>Payment</span>
+                  <span>الدفع</span>
                   <strong>
                     {fulfillment === "pickup"
-                      ? "Cash at the branch"
-                      : "Cash on delivery"}
+                      ? "كاش عند الاستلام من الفرع"
+                      : "كاش عند الاستلام"}
                   </strong>
                 </p>
               </div>
 
               <button type="submit" className="primary-button kc-submit">
-                Send order on WhatsApp
+                ابعت الطلب على واتساب
               </button>
 
               <p className="kc-hint">
-                WhatsApp opens with your order ready. Press Send there to
-                confirm it with Kopi.
+                واتساب هيفتح وفيه طلبك جاهز. اضغط إرسال عشان
+                تأكد الطلب مع قرمشة.
               </p>
             </>
           )}
         </form>
 
         {fulfillment && (
-          <aside className="kc-co-summary" aria-label="Order summary">
-            <h2>Your order</h2>
+          <aside className="kc-co-summary" aria-label="ملخص الطلب">
+            <h2>طلبك</h2>
 
             <ul className="kc-list">
               {items.map(({ product, qty }) => {
@@ -499,7 +498,7 @@ export default function Checkout() {
 
             <div className="kc-total">
               <span>
-                Total · {count} {count === 1 ? "item" : "items"}
+                الإجمالي · {count} {count === 1 ? "صنف" : "أصناف"}
               </span>
 
               <strong>
@@ -509,8 +508,8 @@ export default function Checkout() {
 
             <p className="kc-hint">
               {fulfillment === "pickup"
-                ? "Your order will be ready for pickup at the branch."
-                : "Delivery fee, if any, is confirmed by Kopi on WhatsApp."}
+                ? "طلبك هيكون جاهز للاستلام من الفرع."
+                : "هنتأكد من رسوم التوصيل على واتساب."}
             </p>
           </aside>
         )}
